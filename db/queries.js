@@ -101,6 +101,29 @@ async function deleteEdition(editionid) {
   await pool.query("DELETE FROM editions WHERE editions.id = $1", [editionid]);
 }
 
+async function testConnection() {
+  try {
+    console.log("Testing database connection...");
+    const { rows } = await pool.query("SELECT NOW() as current_time");
+    console.log("Database connection successful:", rows[0]);
+
+    // Test if tables exist
+    const { rows: tables } = await pool.query(`
+      SELECT table_name 
+      FROM information_schema.tables 
+      WHERE table_schema = 'public'
+    `);
+    console.log(
+      "Available tables:",
+      tables.map((t) => t.table_name)
+    );
+  } catch (error) {
+    console.error("Database connection test failed:", error.message);
+  }
+}
+
+testConnection();
+
 module.exports = {
   getAllCards,
   getAllGenres,

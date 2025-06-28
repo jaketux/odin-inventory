@@ -1,16 +1,24 @@
 const db = require("../db/queries");
 
 async function serveHomepage(req, res) {
-  const cards = await db.getAllCards();
-  if (cards.length === 0) {
+  try {
+    const cards = await db.getAllCards();
+    if (cards.length === 0) {
+      res.render("index", {
+        title: "Home",
+      });
+    } else {
+      res.render("index", {
+        title: "Your collection",
+        cards: cards,
+        // cards: cards from card database here
+      });
+    }
+  } catch (error) {
+    console.error("Database error in serveHomepage:", error.message);
     res.render("index", {
-      title: "Home",
-    });
-  } else {
-    res.render("index", {
-      title: "Your collection",
-      cards: cards,
-      // cards: cards from card database here
+      title: "Home (Database Error)",
+      error: "Could not load cards: " + error.message,
     });
   }
 }
