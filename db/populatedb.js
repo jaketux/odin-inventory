@@ -84,6 +84,10 @@ async function main() {
           port: 5432, // The default port
         }),
   });
+  await client.connect();
+  await client.query(SQL);
+  await client.end();
+  console.log("done");
 }
 
 main();
