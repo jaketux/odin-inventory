@@ -1,7 +1,6 @@
-#! /usr/bin/env node
-require("dotenv").config({
-  path: `.env.${process.env.NODE_ENV || "local"}`,
-});
+require("dotenv").config();
+
+const environment = process.env.NODE_ENV || "development";
 
 const { Client } = require("pg");
 
@@ -72,37 +71,19 @@ UPDATE cards SET cardimg = 'https://assets.sportsboom.com/New_UFC_Light_Heavywei
 
 `;
 
-const environment = process.env.NODE_ENV || "local";
-
 async function main() {
   console.log("seeding...");
   const client = new Client({
-    host:
-      environment === "production" ? process.env.PGHOST : process.env.DB_HOST, // or wherever the db is hosted
-    user:
-      environment === "production"
-        ? process.env.PGUSER
-        : process.env.DB_USERNAME,
-    database:
-      environment === "production"
-        ? process.env.PGDATABASE
-        : process.env.DB_USED,
-    password:
-      environment === "production"
-        ? process.env.PGPASSWORD
-        : process.env.DB_PASSWORD,
-    port:
-      environment === "production" ? process.env.PGPORT : process.env.DB_PORT, // The default port
+    ...(process.env.DATABASE_URL
+      ? { connectionString: process.env.DATABASE_URL }
+      : {
+          host: process.env.DB_HOST, // or wherever the db is hosted
+          user: process.env.DB_USERNAME,
+          database: process.env.DB_USED,
+          password: process.env.DB_PASSWORD,
+          port: 5432, // The default port
+        }),
   });
-  console.log("Environment variables check:");
-  console.log("DATABASE_HOST:", process.env.DB_HOST);
-  console.log("DB_USERNAME:", process.env.DB_USERNAME);
-  console.log("DB_USED:", process.env.DB_USED);
-  console.log("DB_PORT:", process.env.DB_PORT);
-  await client.connect();
-  await client.query(SQL);
-  await client.end();
-  console.log("done");
 }
 
 main();
