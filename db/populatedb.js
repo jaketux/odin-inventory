@@ -86,13 +86,18 @@ async function main() {
   });
   await client.connect();
   const { rows } = await client.query(
-    "SELECT COUNT(*) FROM information_schema.tables WHERE table_name = 'cards'"
+    "SELECT COUNT(*) as count FROM information_schema.tables WHERE table_name = 'cards'"
   );
-  const tableExists = parseInt(rows[0].count) > 0;
 
-  if (tableExists) {
-    console.log("Database already seeded, skipping...");
-    return;
+  if (rows[0].count > 0) {
+    // Table exists, check if it has data
+    const { rows: cardRows } = await client.query(
+      "SELECT COUNT(*) as count FROM cards"
+    );
+    if (cardRows[0].count > 0) {
+      console.log("Database already populated, skipping seed");
+      return;
+    }
   }
 
   await client.query(SQL);
