@@ -8,10 +8,8 @@
     "pg": "^8.16.3"
   },
   "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js",
-    "build": "node db/populatedb.js",
-    "postbuild": "echo 'Build complete!'",
+    "build": "echo 'Build complete'",
+    "start": "node db/populatedb.js && node app.js",
     "seed": "node db/populatedb.js"
   }
 }

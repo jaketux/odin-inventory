@@ -85,6 +85,16 @@ async function main() {
         }),
   });
   await client.connect();
+  const { rows } = await client.query(
+    "SELECT COUNT(*) FROM information_schema.tables WHERE table_name = 'cards'"
+  );
+  const tableExists = parseInt(rows[0].count) > 0;
+
+  if (tableExists) {
+    console.log("Database already seeded, skipping...");
+    return;
+  }
+
   await client.query(SQL);
   await client.end();
   console.log("done");
