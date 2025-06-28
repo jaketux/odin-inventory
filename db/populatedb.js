@@ -105,4 +105,12 @@ async function main() {
   console.log("done");
 }
 
-main();
+main()
+  .then(() => {
+    console.log("Seeding script completed");
+    process.exit(0); // Explicitly exit
+  })
+  .catch((error) => {
+    console.error("Seeding script failed:", error);
+    process.exit(1);
+  });
