@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CardTrack</title>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a href="/">Home</a>
+        <a href="/genres">Genres</a>
+        <a href="/editions">Editions</a>
+      </nav>
+    </header>
+    <h1>Cards stored under the "<%=title%>" genre</h1>
+    <% if (locals.cards) {%> <% cards.forEach(card => { %>
+    <div>
+      <div className="upper-card">
+        <div>
+          <img style="width: 200px" src="<%=card.cardimg%>" alt="Card image" />
+        </div>
+        <div className="lower-card">
+          <div>Name: <%=card.card_name %></div>
+          <div>Description: <%=card.carddescription %></div>
+          <div>Rarity: <%=card.rarity_level %></div>
+          <div>Genre: <%=card.genre_name %></div>
+          <div>Edition: <%=card.edition_name %></div>
+        </div>
+        <a href="/<%=card.card_id %>/updatecard">Update</a>
+        <form
+          action="/<%= card.card_id %>/deletegenre"
+          method="POST"
+          style="display: inline"
+        >
+          <button
+            type="submit"
+            onclick="return confirm('Are you sure you want to delete this genre?')"
+          >
+            Delete
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <%}) %> <a href="/">Back to Home</a>
+    <%}%>
+  </body>
+</html>

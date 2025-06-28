@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CardTrack</title>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a href="/">Home</a>
+        <a href="/genres">Genres</a>
+        <a href="/editions">Editions</a>
+      </nav>
+    </header>
+    <h1><%= title %></h1>
+
+    <a href="/createcard">Add a new card to your Collection</a><br/><br />
+    <a href="/creategenre">Add a new genre to your Collection</a><br/><br />
+    <a href="/createedition">Add a new edition type to your Collection</a><br/><br />
+
+
+    <% if (locals.cards) {%> <% cards.forEach(card => { %>
+    <div style="margin-bottom:20px; word-wrap:normal; width:200px; font-size:14px">
+        <div className="upper-card">
+            <div>
+              <img style="width: 200px; height:125px;" src="<%=card.cardimg%>" alt="Card image" />
+            </div>
+          </div>
+          <div className="lower-card">
+            <div>Name: <%=card.card_name %></div>
+            <div>Description: <%=card.carddescription %></div>
+            <div>Rarity: <%=card.rarity_level %></div>
+            <div>Genre: <%=card.genre_name %></div>
+            <div>Edition: <%=card.edition_name %></div>
+          </div>
+          <div>
+        <form
+          action="/<%= card.card_id %>/updatecard"
+          method="GET"
+        >
+          <button
+            type="submit"
+          >
+            Update
+          </button>
+        </form>
+        <form
+          action="/<%= card.card_id %>/deletecard"
+          method="POST"
+          style="display: inline"
+        >
+          <button
+            type="submit"
+            onclick="return confirm('Are you sure you want to delete this card?')"
+          >
+            Delete
+          </button>
+        </form>
+      </div>
+      </div>
+    </div>
+    <%}) %> <%}%>
+
+  </body>
+</html>

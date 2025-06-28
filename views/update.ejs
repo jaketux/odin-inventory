@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CardTrack</title>
+  </head>
+  <body>
+    <header>
+        <nav>
+          <a href="/">Home</a>
+          <a href="/genres">Genres</a>
+          <a href="/editions">Editions</a>
+        </nav>
+      </header>
+    <h1><%= title %></h1>
+
+    <% if (locals.genre) {%>
+    <div>Current Genre: <%=genre.genre %></div>
+    <br />
+    <form action="/<%=genre.id%>/updategenre" method="POST">
+      <label for="update">New Genre Name: </label>
+      <input type="text" id="update" name="update" required />
+      <button type="submit">Submit</button>
+    </form>
+    <%} else if (locals.card) {%>
+    <div>Current Card:</div></br>
+    <div>
+      <div className="upper-card">
+        <div>
+          <img style="width: 200px" src="<%=card.cardimg%>" alt="Card image" />
+        </div>
+      </div>
+      <div className="lower-card">
+        <div>Name: <%=card.card_name %></div>
+        <div>Description: <%=card.carddescription %></div>
+        <div>Rarity: <%=card.rarity_level %></div>
+        <div>Genre: <%=card.genre_name %></div>
+        <div>Edition: <%=card.edition_name %></div>
+      </div>
+    </div></br>
+    <div>New Card Details:</div></br>
+    <form action="/<%=card.card_id%>/updatecard" method="POST">
+        <label for="name">Name: </label>
+        <input type="text" id="name" name="name" value="<%=card.card_name %>" style="width:250px;" required /></br>
+        <label for="description">Description: </label>
+        <input type="text" id="description" name="description" value="<%=card.carddescription %>" required /></br>
+        <label for="rarity">Rarity: </label>
+        <select name="rarity" id="rarity" required>
+
+    <% raritys.forEach(rarity => { %>
+    <option value="<%=rarity.id %>"><%=rarity.raritylevel %></option>
+
+    <%}) %>
+
+        </select><br/>
+        <label for="genre">Genre: </label>
+        <select name="genre" id="genre" required>
+            <% genres.forEach(genre => { %>
+                <option value="<%=genre.id %>"><%=genre.genre %></option>
+
+                <%}) %>
+        </select><br/>
+        <label for="edition">Edition: </label>
+        <select name="edition" id="edition" required>
+            <% editions.forEach(edition => { %>
+                <option value="<%=edition.id %>"><%=edition.edition %></option>
+
+                <%}) %>
+        </select><br/><br/>
+        <button type="submit">Submit</button>
+      </form><br/>
+      <a href="/">Back to Home</a>
+      <%} else if (locals.edition) {%>
+        <div>Current Edition: <%=edition.edition %></div>
+        <br />
+        <form action="/<%=edition.id%>/updateedition" method="POST">
+          <label for="update">New Edition Name: </label>
+          <input type="text" id="update" name="update" required />
+          <button type="submit">Submit</button>
+        </form><br/>
+        <a href="/">Back to Home</a>
+
+        <%}%>
+  </body>
+</html>
